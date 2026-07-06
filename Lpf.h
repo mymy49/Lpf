@@ -13,16 +13,22 @@
 
 class Lpf
 {
+public :
+	Lpf(float ratio);
+
+	Lpf(void);
+
+	void setRatio(float value);
+
+	float calculate(float value);
+
+	float getCurrentData(void);
+
+	void setCurrentData(float data);
+
+private :
 	float mData, mRatio;
 	ElapsedTime mTime;
-
-  public:
-	Lpf(float ratio);
-	Lpf(void);
-	void setRatio(float value);
-	float calculate(float value);
-	float getCurrentData(void);
-	void setCurrentData(float data);
 };
 
 #endif
