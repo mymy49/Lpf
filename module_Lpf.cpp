@@ -34,7 +34,7 @@ float Lpf::calculate(float value)
 	buf = mData - value;
 	elapsedTime = mTime.getUsec();
 	mTime.reset();
-	mData -= buf * mRatio * ((float)elapsedTime / (float)1000000);
+	mData -= buf * mRatio * (float)elapsedTime / (float)1000000;
 
 	return mData;
 }
