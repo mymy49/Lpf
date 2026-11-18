@@ -83,7 +83,183 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
-<p>This is a low-pass filter module available in yss OS. </p>
+<p>[<img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" style="pointer-events: none;" class="inline"/>](LICENSE) <a href="https://github.com/mymy49/Lpf/actions"><img src="https://github.com/mymy49/Lpf/actions/workflows/doxygen.yml/badge.svg" alt="Doxygen Build" style="pointer-events: none;" class="inline"/></a> <a href="https://mymy49.github.io/Lpf/"><img src="https://img.shields.io/badge/docs-API%20Reference-brightgreen.svg" alt="Doxygen API Docs" style="pointer-events: none;" class="inline"/></a></p>
+<p>Time-aware, continuous-time first-order Low Pass Filter (LPF) class with dynamic sampling interval compensation, designed for the <b>yss OS</b> embedded framework.</p>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
+1. Overview &amp; Key Features</h1>
+<p>The <b><a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a></b> module provides an efficient first-order low-pass filter tailored for embedded sensor processing, analog signal conditioning, and touch coordinate debouncing/smoothing. Unlike standard discrete digital filters that assume an idealized, fixed sampling period ($T_s$), <span class="tt"><a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a></span> dynamically measures the microsecond elapsed time between successive calculation invocations.</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md5"></a>
+Key Highlights</h2>
+<ul>
+<li><b>Dynamic Elapsed-Time Compensation</b>:<ul>
+<li>Incorporates <span class="tt">ElapsedTime</span> from yss OS to calculate the exact \( \Delta t \) between consecutive calls.</li>
+<li>Maintains consistent filter dynamics and cutoff characteristics even in the presence of task scheduling jitter, variable CPU load, or non-uniform interrupt arrival rates.</li>
+</ul>
+</li>
+<li><b>Mathematical Formulation</b>:<ul>
+<li>Discretized continuous-time first-order low-pass filter:   <p class="formulaDsp">
+\[    y(t) = y(t - \Delta t) - (y(t - \Delta t) - x(t)) \cdot \text{ratio} \cdot \Delta t
+\]
+</p>
+ where:<ul>
+<li>\( x(t) \): Raw input sample (ADC voltage, sensor reading, raw coordinate).</li>
+<li>\( y(t) \): Filtered output sample stored in <span class="tt">mData</span>.</li>
+<li>\( \Delta t \): Measured microsecond elapsed time converted to seconds \( (\frac{\Delta t_{\mu s}}{1,000,000}) \).</li>
+<li>\( \text{ratio} \): Convergence rate coefficient determining filter response speed.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><b>Transient Jump Suppression</b>:<ul>
+<li><span class="tt">setCurrentData(initialValue)</span> allows immediate pre-loading of the filter's internal state with the initial sample, preventing initial ramp-up delay or false startup transients.</li>
+</ul>
+</li>
+<li><b>Lightweight Embedded Design</b>:<ul>
+<li>Minimal footprint: only two 32-bit floats and a hardware elapsed timer.</li>
+<li>Zero dynamic heap allocation during execution, making it suitable for high-rate interrupt handlers and tight real-time control loops.</li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md7"></a>
+2. System Specifications &amp; Hardware Environment</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md8"></a>
+Supported Targets &amp; Tools</h2>
+<ul>
+<li><b>Target Microcontrollers &amp; Development Boards</b>:<ul>
+<li>Nuvoton NuMicro® M251 series (e.g., <b>NuMaker-M251KG</b> / Cortex®-M23).</li>
+<li>Any microcontroller platform supported by the <b>yss OS</b> framework.</li>
+</ul>
+</li>
+<li><b>Typical Use Cases</b>:<ul>
+<li>Resistive touch screen coordinate jitter elimination (e.g. smoothing XPT2046 touch input).</li>
+<li>Smoothing noisy Analog-to-Digital Converter (ADC) sensor readings (temperature, battery voltage, current sense).</li>
+<li>IMU sensor data smoothing (accelerometers, gyroscopes).</li>
+</ul>
+</li>
+<li><b>Required Software &amp; Toolchains</b>:<ul>
+<li>Toolchain: ARM GNU Toolchain or CrossWorks for ARM (v5.x or higher).<ul>
+<li><b>Note on CrossWorks for ARM</b>: CrossWorks for ARM does not natively support the Nuvoton M251 series. You must install the custom <a href="https://github.com/mymy49/CrossworksForARM_Nuvoton_M251">CrossworksForARM_Nuvoton_M251 Support Package</a> before building M251 projects.</li>
+</ul>
+</li>
+<li>Operating System: <a href="https://github.com/mymy49/yss">yss OS</a> (embedded RTOS &amp; HAL, providing <span class="tt">util/ElapsedTime.h</span>).</li>
+<li>Language: C++11 or higher.</li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md10"></a>
+3. Installation &amp; Project Setup</h1>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md11"></a>
+Cloning with Submodules</h2>
+<p>To clone a project that includes this repository as a submodule: </p><div class="fragment"><div class="line">git clone --recursive https://github.com/mymy49/NuMaker-M251KG_example.git</div>
+</div><!-- fragment --><p>To add this repository as a submodule into your existing yss OS application: </p><div class="fragment"><div class="line">git submodule add https://github.com/mymy49/Lpf.git module/Lpf</div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md12"></a>
+Prerequisites: Nuvoton M251 Support Package for CrossWorks for ARM</h2>
+<p>CrossWorks for ARM does not natively provide device support for Nuvoton NuMicro® M251 microcontrollers in its default package manager. A custom device support package must be installed beforehand:</p>
+<ol type="1">
+<li>Clone or download the <a href="https://github.com/mymy49/CrossworksForARM_Nuvoton_M251">CrossworksForARM_Nuvoton_M251</a> repository.</li>
+<li>Open the package project file (<span class="tt">.hzp</span>) in CrossWorks for ARM and build it (<span class="tt">F7</span> or <span class="tt">Build -&gt; Build Project</span>) to generate the package file (<span class="tt">.hzq</span>).</li>
+<li>In CrossWorks for ARM, navigate to <b>Tools -&gt; Packages -&gt; Manually Install Packages...</b> and select the generated <span class="tt">.hzq</span> package file.</li>
+<li>Once installed, M251 target device definitions, CMSIS headers, and project templates will be fully available in CrossWorks for ARM.</li>
+</ol>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md13"></a>
+Build and Firmware Flashing</h2>
+<ul>
+<li><b>CrossWorks for ARM</b>:<ol type="1">
+<li>Ensure the <a href="https://github.com/mymy49/CrossworksForARM_Nuvoton_M251">CrossworksForARM_Nuvoton_M251</a> package has been installed.</li>
+<li>Open the project solution file (e.g., <span class="tt">Example.hzp</span>).</li>
+<li>Select target configuration (<span class="tt">Example THUMB Release</span> or <span class="tt">Example THUMB Debug</span>).</li>
+<li>Build solution via <span class="tt">F7</span> or <span class="tt">Build -&gt; Build Solution</span>.</li>
+<li>Connect the board via Nu-Link ICE and flash with <span class="tt">Ctrl+D</span> (<span class="tt">Target -&gt; Download</span>).</li>
+</ol>
+</li>
+<li><b>Command Line (pyOCD / OpenOCD)</b>: <div class="fragment"><div class="line"># Flash prebuilt binary using pyocd</div>
+<div class="line">pyocd flash -t m251kg firmware.bin</div>
+</div><!-- fragment --></li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md15"></a>
+4. Quick Start &amp; Example Code</h1>
+<p>Below are real-world usage patterns demonstrating how to apply <span class="tt"><a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a></span> for touch coordinate smoothing and analog sensor filtering under yss OS:</p>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md16"></a>
+1. Touch Coordinate Smoothing (from <span class="tt">page_drawing.cpp</span> &amp; <span class="tt">page_touchCalibration.cpp</span>)</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;bsp.h&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="Lpf_8h.html">Lpf/Lpf.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Filters for X and Y touch axes with convergence ratio of 20.0</span></div>
+<div class="line"><span class="keyword">static</span> <a class="code hl_class" href="classLpf.html">Lpf</a> gLpfX(20.0f);</div>
+<div class="line"><span class="keyword">static</span> <a class="code hl_class" href="classLpf.html">Lpf</a> gLpfY(20.0f);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> touchEventCallback(PointerDevice::event_t event)</div>
+<div class="line">{</div>
+<div class="line">    <span class="keywordflow">switch</span> (event.event)</div>
+<div class="line">    {</div>
+<div class="line">    <span class="keywordflow">case</span> PointerDevice::EVENT_TOUCH_DOWN:</div>
+<div class="line">        <span class="comment">// Pre-seed filter state to initial contact point to eliminate ramp-up lag</span></div>
+<div class="line">        gLpfX.setCurrentData(event.x);</div>
+<div class="line">        gLpfY.setCurrentData(event.y);</div>
+<div class="line">        <span class="keywordflow">break</span>;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">case</span> PointerDevice::EVENT_TOUCH_DRAG:</div>
+<div class="line">        <span class="comment">// Update filter with new touch coordinates and retrieve smoothed output</span></div>
+<div class="line">        uint16_t smoothX = (uint16_t)gLpfX.calculate(event.x);</div>
+<div class="line">        uint16_t smoothY = (uint16_t)gLpfY.calculate(event.y);</div>
+<div class="line"> </div>
+<div class="line">        <span class="comment">// Perform drawing with smoothed coordinates</span></div>
+<div class="line">        lcd.lock();</div>
+<div class="line">        lcd.drawLine({lastX, lastY}, {smoothX, smoothY});</div>
+<div class="line">        lcd.unlock();</div>
+<div class="line"> </div>
+<div class="line">        lastX = smoothX;</div>
+<div class="line">        lastY = smoothY;</div>
+<div class="line">        <span class="keywordflow">break</span>;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">case</span> PointerDevice::EVENT_TOUCH_UP:</div>
+<div class="line">        <span class="comment">// Touch released</span></div>
+<div class="line">        <span class="keywordflow">break</span>;</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="aLpf_8h_html"><div class="ttname"><a href="Lpf_8h.html">Lpf.h</a></div><div class="ttdoc">First-order Low Pass Filter (LPF) class with elapsed time-based dynamic weighting.</div></div>
+<div class="ttc" id="aclassLpf_html"><div class="ttname"><a href="classLpf.html">Lpf</a></div><div class="ttdoc">A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.</div><div class="ttdef"><b>Definition</b> Lpf.h:55</div></div>
+</div><!-- fragment --><h2 class="doxsection"><a class="anchor" id="autotoc_md17"></a>
+2. General Periodic ADC Sensor Filtering</h2>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="Lpf_8h.html">Lpf/Lpf.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;yss/instance.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Initialize filter with convergence speed 5.0</span></div>
+<div class="line"><a class="code hl_class" href="classLpf.html">Lpf</a> batteryFilter(5.0f);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> batteryMonitorThread(<span class="keywordtype">void</span>)</div>
+<div class="line">{</div>
+<div class="line">    <span class="comment">// Initialize filter state with the first ADC sample</span></div>
+<div class="line">    batteryFilter.setCurrentData(readBatteryAdc());</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span> (1)</div>
+<div class="line">    {</div>
+<div class="line">        <span class="keywordtype">float</span> rawAdc = readBatteryAdc();</div>
+<div class="line">        <span class="keywordtype">float</span> filteredVoltage = batteryFilter.calculate(rawAdc);</div>
+<div class="line"> </div>
+<div class="line">        <span class="comment">// Process smoothed value...</span></div>
+<div class="line">        thread::delay(20); <span class="comment">// 50 Hz loop with dynamic jitter compensation</span></div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md19"></a>
+5. Documentation &amp; References</h1>
+<ul>
+<li><b>Doxygen API Reference</b>: <a href="https://mymy49.github.io/Lpf/">https://mymy49.github.io/Lpf/</a></li>
+<li><b>Doxygen Main Page</b>: This <span class="tt"><a class="el" href="README_8md.html">README.md</a></span> file serves as the main page of the generated Doxygen documentation (<span class="tt">USE_MDFILE_AS_MAINPAGE = <a class="el" href="README_8md.html">README.md</a></span>).</li>
+<li><b>Underlying Framework</b>: <a href="https://github.com/mymy49/yss">yss OS</a></li>
+</ul>
+<hr  />
+<h1 class="doxsection"><a class="anchor" id="autotoc_md21"></a>
+6. License &amp; Author</h1>
+<ul>
+<li><b>Author</b>: Yoon-Ki Hong</li>
+<li><b>License</b>: MIT License. See [LICENSE](LICENSE) for full terms and conditions. </li>
+</ul>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->

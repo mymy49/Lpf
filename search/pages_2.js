@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lpf_0',['Lpf',['../index.html',1,'']]]
+  ['3_20installation_20project_20setup_0',['3. Installation &amp;amp; Project Setup',['../index.html#autotoc_md10',1,'']]]
 ];

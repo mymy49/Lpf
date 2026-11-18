@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['getcurrentdata_0',['getCurrentData',['../classLpf.html#a0d6309b7219a27b8438c18230bb97b28',1,'Lpf']]]
+  ['4_20quick_20start_20example_20code_0',['4. Quick Start &amp;amp; Example Code',['../index.html#autotoc_md15',1,'']]]
 ];

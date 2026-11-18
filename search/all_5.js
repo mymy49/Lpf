@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['module_5flpf_2ecpp_0',['module_Lpf.cpp',['../module__Lpf_8cpp.html',1,'']]]
+  ['6_20license_20author_0',['6. License &amp;amp; Author',['../index.html#autotoc_md21',1,'']]]
 ];
