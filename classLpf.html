@@ -134,7 +134,7 @@ Example Usage</h3>
 <div class="line">    <span class="comment">// Use filteredValue...</span></div>
 <div class="line">}</div>
 <div class="ttc" id="aLpf_8h_html"><div class="ttname"><a href="Lpf_8h.html">Lpf.h</a></div><div class="ttdoc">First-order Low Pass Filter (LPF) class with elapsed time-based dynamic weighting.</div></div>
-<div class="ttc" id="aclassLpf_html_aea01598863ed92296232585874c0ad2b"><div class="ttname"><a href="#aea01598863ed92296232585874c0ad2b">Lpf::Lpf</a></div><div class="ttdeci">Lpf(float ratio)</div><div class="ttdoc">Constructs a new Lpf object with a specified convergence ratio.</div><div class="ttdef"><b>Definition</b> module_Lpf.cpp:20</div></div>
+<div class="ttc" id="aclassLpf_html_aea01598863ed92296232585874c0ad2b"><div class="ttname"><a href="#aea01598863ed92296232585874c0ad2b">Lpf::Lpf</a></div><div class="ttdeci">Lpf(float ratio)</div><div class="ttdoc">Constructs a new Lpf object with a specified convergence ratio.</div><div class="ttdef"><b>Definition</b> module_Lpf.cpp:26</div></div>
 </div><!-- fragment --> </div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aea01598863ed92296232585874c0ad2b" name="aea01598863ed92296232585874c0ad2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aea01598863ed92296232585874c0ad2b">&#9670;&#160;</a></span>Lpf() <span class="overload">[1/2]</span></h2>
@@ -154,11 +154,21 @@ Example Usage</h3>
 <p>Constructs a new <a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a> object with a specified convergence ratio. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">ratio</td><td>Filter coefficient representing the convergence speed (higher value converges faster).</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ratio</td><td>Filter coefficient representing the convergence speed (higher value converges faster). </td></tr>
   </table>
   </dd>
 </dl>
-<p>Initializes a new <a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a> instance with a user-specified filter ratio. It resets the internal elapsed timer and initializes the filtered output state to 0. </p>
+<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Yoon-Ki Hong </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-11-18 </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Ensure the yss OS runtime timer is initialized before constructing or updating this filter. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Initializes the internal filtered state <span class="tt">mData</span> to <span class="tt">0.0f</span> and resets the elapsed timer. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>yss OS runtime timer (<span class="tt">YSS_RUNTIME_TIMER</span>) must be active. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>Filter instance is initialized with <span class="tt">mRatio = ratio</span> and <span class="tt">mData = 0.0f</span>. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated</a></b></dt><dd>none </dd></dl>
+<p>Initializes a new <span class="tt"><a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a></span> instance with a user-specified filter convergence ratio. Resets the internal microsecond elapsed timer (<span class="tt">mTime</span>) and initializes the filtered output state (<span class="tt">mData</span>) to <span class="tt">0.0f</span>. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#ad0ef80c9916e17037fde58f84c39b6f1" title="Sets the filter convergence ratio coefficient.">Lpf::setRatio</a>, ElapsedTime::reset </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo</a></b></dt><dd>none </dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000001">Bug</a></b></dt><dd>none </dd></dl>
 
 </div>
 </div>
@@ -178,7 +188,23 @@ Example Usage</h3>
 </div><div class="memdoc">
 
 <p>Constructs a new <a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a> object with default ratio (1.0) and zero initial state. </p>
-<p>Initializes a new <a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a> instance with a default filter ratio of 1.0. It resets the internal elapsed timer and sets the filtered output state to 0. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">none</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Yoon-Ki Hong </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-11-18 </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Ensure the yss OS runtime timer is initialized before constructing or updating this filter. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Initializes <span class="tt">mRatio</span> to <span class="tt">1.0f</span>, <span class="tt">mData</span> to <span class="tt">0.0f</span>, and resets the internal elapsed timer. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>yss OS runtime timer (<span class="tt">YSS_RUNTIME_TIMER</span>) must be active. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>Filter instance is initialized with default parameters. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated</a></b></dt><dd>none </dd></dl>
+<p>Initializes a new <span class="tt"><a class="el" href="classLpf.html" title="A continuous-time first-order Low Pass Filter (LPF) utilizing microsecond elapsed time.">Lpf</a></span> instance with a default filter ratio of <span class="tt">1.0f</span>. Resets the internal microsecond elapsed timer (<span class="tt">mTime</span>) and sets the filtered output state (<span class="tt">mData</span>) to <span class="tt">0.0f</span>. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#aea01598863ed92296232585874c0ad2b" title="Constructs a new Lpf object with a specified convergence ratio.">Lpf::Lpf(float)</a>, ElapsedTime::reset </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>none </dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000002">Bug</a></b></dt><dd>none </dd></dl>
 
 </div>
 </div>
@@ -199,14 +225,23 @@ Example Usage</h3>
 </div><div class="memdoc">
 
 <p>Updates the filter state with a new raw input value and returns the filtered output. </p>
-<p>Measures the elapsed time since the previous call, calculates the new filtered value using first-order low-pass filter equation, and resets the internal timer. </p><dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Raw input sample to be filtered. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The updated filtered value.</dd></dl>
-<p>Calculates the next filtered output sample given the raw input value. The method obtains the microsecond elapsed time since the previous calculation, resets the timer, and computes the 1st-order discrete approximation: \( mData = mData - (mData - value) \times mRatio \times \Delta t \). </p>
+<dl class="section return"><dt>Returns</dt><dd>The updated filtered floating-point value. </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Yoon-Ki Hong </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-11-18 </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Very long gaps between calls can cause <span class="tt">(mRatio * elapsedTime)</span> to exceed <span class="tt">1.0f</span> and overshoot. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Measures the microsecond elapsed time since the previous call and resets the internal timer. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Filter instance must be initialized; optionally call <span class="tt"><a class="el" href="#adce9b10cb7aee09ba4ae4163748d9729" title="Manually sets the current filtered value.">setCurrentData()</a></span> on the first sample. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><span class="tt">mData</span> and <span class="tt">mTime</span> are updated for the current sampling instant. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000004">Deprecated</a></b></dt><dd>none </dd></dl>
+<p>Calculates the next filtered output sample given the raw input value. The method obtains the microsecond elapsed time since the previous calculation via <span class="tt">mTime.getUsec()</span>, resets the timer for the next interval, and computes the 1st-order discrete approximation: \( mData = mData - (mData - value) \times mRatio \times \Delta t \). </p><dl class="section see"><dt>See also</dt><dd>ElapsedTime::getUsec, ElapsedTime::reset, <a class="el" href="#a0d6309b7219a27b8438c18230bb97b28" title="Retrieves the most recently calculated filtered value without updating filter state.">Lpf::getCurrentData</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo</a></b></dt><dd>none </dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000004">Bug</a></b></dt><dd>none </dd></dl>
 
 </div>
 </div>
@@ -226,8 +261,23 @@ Example Usage</h3>
 </div><div class="memdoc">
 
 <p>Retrieves the most recently calculated filtered value without updating filter state. </p>
-<dl class="section return"><dt>Returns</dt><dd>The current filtered value stored in the filter.</dd></dl>
-<p>Returns the current internal filtered state value without performing any update. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">none</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The current filtered value stored in the filter (<span class="tt">mData</span>). </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Yoon-Ki Hong </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-11-18 </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>none </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Does not reset or modify the internal elapsed time counter. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Filter instance must be constructed. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd>Filter state remains unchanged. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated</a></b></dt><dd>none </dd></dl>
+<p>Returns the current internal filtered state value (<span class="tt">mData</span>) without performing any update. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#adce9b10cb7aee09ba4ae4163748d9729" title="Manually sets the current filtered value.">Lpf::setCurrentData</a>, <a class="el" href="#a233e97c39369db3581a6969eec968c3a" title="Updates the filter state with a new raw input value and returns the filtered output.">Lpf::calculate</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo</a></b></dt><dd>none </dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000005">Bug</a></b></dt><dd>none </dd></dl>
 
 </div>
 </div>
@@ -247,13 +297,23 @@ Example Usage</h3>
 </div><div class="memdoc">
 
 <p>Manually sets the current filtered value. </p>
-<p>Useful for initializing the filter state to the first measured sample to prevent an initial ramp-up delay or transient offset. </p><dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>The initial or forced value to set.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>The initial or forced value to set as the internal filtered output state. </td></tr>
   </table>
   </dd>
 </dl>
-<p>Overwrites the current internal filtered state with the specified value. This can be used to set an initial baseline (e.g., initial sensor reading) to avoid startup transient lag. </p>
+<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Yoon-Ki Hong </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-11-18 </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Overwrites the accumulated filter history immediately. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Useful for seeding the filter with the first raw sensor/touch sample to avoid startup ramp lag. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Filter instance must be constructed. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><span class="tt">mData</span> is set directly to <span class="tt">data</span>. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated</a></b></dt><dd>none </dd></dl>
+<p>Overwrites the current internal filtered state (<span class="tt">mData</span>) with the specified value. This is commonly used to seed an initial baseline (e.g., first sensor or touch coordinate reading) to avoid startup transient lag. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a0d6309b7219a27b8438c18230bb97b28" title="Retrieves the most recently calculated filtered value without updating filter state.">Lpf::getCurrentData</a>, <a class="el" href="#a233e97c39369db3581a6969eec968c3a" title="Updates the filter state with a new raw input value and returns the filtered output.">Lpf::calculate</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo</a></b></dt><dd>none </dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000006">Bug</a></b></dt><dd>none </dd></dl>
 
 </div>
 </div>
@@ -275,11 +335,21 @@ Example Usage</h3>
 <p>Sets the filter convergence ratio coefficient. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Filter coefficient (convergence speed).</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Filter coefficient (convergence speed). </td></tr>
   </table>
   </dd>
 </dl>
-<p>Sets the convergence ratio coefficient used in subsequent low-pass filter calculations. </p>
+<dl class="section return"><dt>Returns</dt><dd>none </dd></dl>
+<dl class="section author"><dt>Author</dt><dd>Yoon-Ki Hong </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2026-11-18 </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>Positive values should be used for stable low-pass convergence. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>Can be adjusted dynamically at runtime without resetting the current filter output state. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Filter instance must be constructed. </dd></dl>
+<dl class="section post"><dt>Postcondition</dt><dd><span class="tt">mRatio</span> is updated to <span class="tt">value</span>. </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000003">Deprecated</a></b></dt><dd>none </dd></dl>
+<p>Sets the convergence ratio coefficient (<span class="tt">mRatio</span>) used in subsequent low-pass filter calculations. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#a233e97c39369db3581a6969eec968c3a" title="Updates the filter state with a new raw input value and returns the filtered output.">Lpf::calculate</a> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo</a></b></dt><dd>none </dd></dl>
+<dl class="bug"><dt><b><a class="el" href="bug.html#_bug000003">Bug</a></b></dt><dd>none </dd></dl>
 
 </div>
 </div>
