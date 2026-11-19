@@ -45,7 +45,7 @@ The **Lpf** module provides an efficient first-order low-pass filter tailored fo
   - Smoothing noisy Analog-to-Digital Converter (ADC) sensor readings (temperature, battery voltage, current sense).
   - IMU sensor data smoothing (accelerometers, gyroscopes).
 - **Required Software & Toolchains**:
-  - Toolchain: ARM GNU Toolchain or CrossWorks for ARM (v5.x or higher).
+  - Toolchain: CrossWorks for ARM (v5.x or higher).
     - **Note on CrossWorks for ARM**: CrossWorks for ARM does not natively support the Nuvoton M251 series. You must install the custom [CrossworksForARM_Nuvoton_M251 Support Package](https://github.com/mymy49/CrossworksForARM_Nuvoton_M251) before building M251 projects.
   - Operating System: [yss OS](https://github.com/mymy49/yss) (embedded RTOS & HAL, providing `util/ElapsedTime.h`).
   - Language: C++11 or higher.
